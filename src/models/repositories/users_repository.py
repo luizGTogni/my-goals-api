@@ -31,6 +31,14 @@ class UsersRepository(IUsersRepository):
             except NoResultFound:
                 return None
 
+    def find_by_username(self, username: str) -> User:
+        with self.__db_conn as db:
+            try:
+                user = db.session.query(User).filter_by(username=username).one()
+                return user
+            except NoResultFound:
+                return None
+
     def update(self, user_id: str, data: dict) -> None:
         with self.__db_conn as db:
             try:
