@@ -107,6 +107,24 @@ def test_find_user_by_username_exception():
     response = repository.find_by_username(username)
     assert response is None
 
+def test_find_user_by_email():
+    conn = DBConnectionMock()
+    repository = UsersRepository(db_conn=conn)
+    email="johndoe@example.com"
+    repository.find_by_email(email)
+
+    conn.session.query.assert_called_once()
+    conn.session.filter_by.assert_called_once_with(email=email)
+    conn.session.one.assert_called_once()
+
+def test_find_user_by_email_exception():
+    conn = DBConnectionExceptionMock()
+    repository = UsersRepository(db_conn=conn)
+    email="johndoe@example.com"
+
+    response = repository.find_by_email(email)
+    assert response is None
+
 def test_update_user():
     conn = DBConnectionMock()
     repository = UsersRepository(db_conn=conn)
