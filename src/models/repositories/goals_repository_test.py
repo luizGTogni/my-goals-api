@@ -147,7 +147,7 @@ def test_update_status_goal_exception():
         goal_id=uuid4()
         repository.update_status(goal_id, new_status=StatusEnum.COMPLETED)
 
-def test_delete_user():
+def test_delete_task():
     conn = DBConnectionMock()
     repository = GoalsRepository(db_conn=conn)
     goal_id=uuid4()
@@ -157,7 +157,7 @@ def test_delete_user():
     conn.session.filter_by.assert_called_once_with(id=goal_id)
     conn.session.delete.assert_called_once_with()
 
-def test_delete_user_exception():
+def test_delete_task_exception():
     conn = DBConnectionExceptionMock()
     repository = GoalsRepository(db_conn=conn)
 
