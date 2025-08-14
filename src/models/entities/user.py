@@ -1,6 +1,7 @@
 # pylint: disable=not-callable
 import uuid
 from sqlalchemy import Column, String, UUID, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from src.models.settings.base import Base
 
@@ -20,10 +21,17 @@ class User(Base):
         onupdate=func.now()
     )
 
+    goals = relationship(
+        "Goal",
+        back_populates="owner",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )
+
     def __repr__(self):
         return (
             f"<User id={self.id} " +
             f"name='{self.name}' " +
             f"username='{self.username}' " +
-            f"email='{self.emai}'>"
+            f"email='{self.email}'>"
         )
