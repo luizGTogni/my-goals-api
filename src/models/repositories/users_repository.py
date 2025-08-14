@@ -35,6 +35,7 @@ class UsersRepository(IUsersRepository):
         with self.__db_conn as db:
             try:
                 db.session.query(User).filter_by(id=user_id).update(data)
+                db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception
@@ -43,6 +44,7 @@ class UsersRepository(IUsersRepository):
         with self.__db_conn as db:
             try:
                 db.session.query(User).filter_by(id=user_id).delete()
+                db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception

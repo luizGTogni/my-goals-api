@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from src.models.entities.user import User
 
 class IUsersRepository(ABC):
 
@@ -7,7 +8,7 @@ class IUsersRepository(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, user_id: str) -> dict:
+    def find_by_id(self, user_id: str) -> User:
         pass
 
     @abstractmethod
