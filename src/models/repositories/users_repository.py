@@ -39,6 +39,14 @@ class UsersRepository(IUsersRepository):
             except NoResultFound:
                 return None
 
+    def find_by_email(self, email: str) -> User:
+        with self.__db_conn as db:
+            try:
+                user = db.session.query(User).filter_by(email=email).one()
+                return user
+            except NoResultFound:
+                return None
+
     def update(self, user_id: str, data: dict) -> None:
         with self.__db_conn as db:
             try:
