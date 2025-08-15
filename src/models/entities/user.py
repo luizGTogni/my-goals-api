@@ -12,7 +12,7 @@ class User(Base):
     name = Column(String(length=150), nullable=False)
     username = Column(String(length=100), nullable=False, unique=True)
     email = Column(String(length=200), nullable=False)
-    password = Column(String(), nullable=False)
+    password = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = Column(
         DateTime(timezone=True),
