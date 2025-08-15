@@ -1,13 +1,13 @@
-from flask import Blueprint, request, jsonify
-from src.types.http import HttpRequest
+from flask import Blueprint
 from src.main.composer.create_user_composer import create_user_composer
+from src.middlewares.decorators.error_handler import error_handler
+from src.adapters import FlaskAdapter
 
 users_routes_bp = Blueprint("users_routes_bp", __name__)
 
 @users_routes_bp.route("/users", methods=["POST"])
+@error_handler
 def create_user():
-    http_request = HttpRequest(body=request.json)
     view = create_user_composer()
-    http_response = view.handle(http_request)
-
-    return jsonify(http_response.body), http_response.status_code
+    flask_adapter = FlaskAdapter(view)
+    return flask_adapter.route_handler()
