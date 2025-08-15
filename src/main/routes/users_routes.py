@@ -1,7 +1,7 @@
 from flask import Blueprint
 from src.main.composer.create_user_composer import create_user_composer
 from src.main.composer.login_composer import login_composer
-from src.middlewares.decorators.error_handler import error_handler
+from src.middlewares.decorators import error_handler
 from src.adapters import FlaskAdapter
 
 users_routes_bp = Blueprint("users_routes_bp", __name__)
