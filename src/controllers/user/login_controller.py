@@ -1,11 +1,11 @@
-from src.controllers.interfaces.user.create_controller import ICreateUserController
+from src.controllers.interfaces.user.login_controller import ILoginController
 from src.drivers.password_handler import PasswordHandler
 from src.models.entities import User
 from src.models.repositories.users_repository import UsersRepository
 from src.types.errors import HttpUnauthorizedError
 from src.drivers.jwt_handler import JwtHandler
 
-class LoginController(ICreateUserController):
+class LoginController(ILoginController):
     def __init__(self, users_repository: UsersRepository) -> None:
         self.__users_repository = users_repository
         self.__password_handle = PasswordHandler()
@@ -32,7 +32,7 @@ class LoginController(ICreateUserController):
         if not is_combine:
             raise HttpUnauthorizedError("Username or Password invalid")
 
-    def __generate_token(self, user_id: str) -> None:
+    def __generate_token(self, user_id: str) -> str:
         token = self.__jwt_handle.generate_token(body={ "user_id": user_id })
         return token
 
