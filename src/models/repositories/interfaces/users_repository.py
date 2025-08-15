@@ -12,6 +12,14 @@ class IUsersRepository(ABC):
         pass
 
     @abstractmethod
+    def find_by_username(self, username: str) -> User:
+        pass
+
+    @abstractmethod
+    def find_by_email(self, email: str) -> User:
+        pass
+
+    @abstractmethod
     def update(self, user_id: str, data: dict) -> None:
         pass
 
