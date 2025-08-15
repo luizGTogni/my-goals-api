@@ -8,7 +8,7 @@ class CreateUserController(ICreateUserController):
         self.__users_repository = users_repository
         self.__password_handle = PasswordHandler()
 
-    def create(self, user_info: dict) -> None:
+    def create(self, user_info: dict) -> dict:
         name = user_info["name"]
         username = user_info["username"]
         email = user_info["email"]
