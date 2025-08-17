@@ -27,8 +27,8 @@ def test_create_view_test():
         body={
             "title": "Title Goal",
             "description": "Description Goal",
-            "goal_id": str(uuid4())
         },
+        params={ "goal_id": str(uuid4()) },
         token_info={ "user_id": user_id }
     )
 
@@ -36,7 +36,7 @@ def test_create_view_test():
 
     assert mock_controller.create_attributes["title"] == http_request.body["title"]
     assert mock_controller.create_attributes["description"] == http_request.body["description"]
-    assert mock_controller.create_attributes["goal_id"] == http_request.body["goal_id"]
+    assert mock_controller.create_attributes["goal_id"] == http_request.params["goal_id"]
     assert mock_controller.create_attributes["user_id"] == http_request.token_info["user_id"]
     assert isinstance(http_response, HttpResponse)
     assert http_response.status_code == 201
