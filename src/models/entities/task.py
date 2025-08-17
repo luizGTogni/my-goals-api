@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from src.models.settings.base import Base
 
-class StatusEnum(str, enum.Enum):
+class StatusTaskEnum(str, enum.Enum):
     TODO = "todo"
     DONE = "done"
 
@@ -17,7 +17,7 @@ class Task(Base):
     title = Column(String(length=150), nullable=False)
     description = Column(String(length=300), nullable=False, unique=True)
     goal_id = Column(UUID(as_uuid=True), ForeignKey("goals.id", ondelete="CASCADE"), nullable=False)
-    status = Column(Enum(StatusEnum), default=StatusEnum.TODO, nullable=False)
+    status = Column(Enum(StatusTaskEnum), default=StatusTaskEnum.TODO, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = Column(
         DateTime(timezone=True),

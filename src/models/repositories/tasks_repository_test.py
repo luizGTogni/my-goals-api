@@ -4,7 +4,7 @@ from sqlalchemy.exc import NoResultFound
 from mock_alchemy.mocking import UnifiedAlchemyMagicMock
 from src.models.entities.user import User
 from src.models.entities.goal import Goal
-from src.models.entities.task import StatusEnum
+from src.models.entities.task import StatusTaskEnum
 from .tasks_repository import TasksRepository
 
 class DBConnectionMock:
@@ -144,12 +144,12 @@ def test_update_status_task():
     conn = DBConnectionMock()
     repository = TasksRepository(db_conn=conn)
     task_id=uuid4()
-    repository.update_status(task_id, new_status=StatusEnum.DONE)
+    repository.update_status(task_id, new_status=StatusTaskEnum.DONE)
 
     conn.session.query.assert_called_once()
     conn.session.filter_by.assert_called_once_with(id=task_id)
     conn.session.update.assert_called_once_with({
-        "status":StatusEnum.DONE,
+        "status":StatusTaskEnum.DONE,
     })
 
 def test_update_status_task_exception():
@@ -158,7 +158,7 @@ def test_update_status_task_exception():
 
     with raises(Exception):
         task_id=uuid4()
-        repository.update_status(task_id, new_status=StatusEnum.DONE)
+        repository.update_status(task_id, new_status=StatusTaskEnum.DONE)
 
 def test_delete_task():
     conn = DBConnectionMock()
