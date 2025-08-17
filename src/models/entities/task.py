@@ -34,3 +34,14 @@ class Task(Base):
             f"description='{self.description}' " +
             f"status='{self.status}'>"
         )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status,
+            "goal": self.goal.to_dict(simplified=True),
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
