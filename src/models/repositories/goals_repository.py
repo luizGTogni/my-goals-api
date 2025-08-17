@@ -74,6 +74,7 @@ class GoalsRepository(IGoalsRepository):
                 db.session.query(Goal).filter_by(id=goal_id).update({
                     "status": new_status,
                 })
+                db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception
