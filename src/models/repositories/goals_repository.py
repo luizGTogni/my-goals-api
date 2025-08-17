@@ -31,10 +31,27 @@ class GoalsRepository(IGoalsRepository):
             except NoResultFound:
                 return None
 
-    def find_all(self) -> list[Goal]:
+    def find_all(self, user_id: str = None, filters: dict = None) -> list[Goal]:
         with self.__db_conn as db:
             try:
-                goals = db.session.query(Goal).all()
+                query = db.session.query(Goal)
+                fields_accepted = ["description", "title"]
+
+                for field, value in filters.items():
+                    if field in fields_accepted:
+                        column = getattr(Goal, field)
+                        query = query.filter(column.ilike(f"%{value}%"))
+
+                if "status" in filters:
+                    value = filters["status"]
+                    if value in StatusEnum:
+                        query = query.filter_by(status=value)
+
+                if not user_id:
+                    goals = query.all()
+                    return goals
+
+                goals = query.filter_by(user_id=user_id).all()
                 return goals
             except NoResultFound:
                 return []
