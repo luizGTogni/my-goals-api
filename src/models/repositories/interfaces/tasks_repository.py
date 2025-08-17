@@ -13,7 +13,7 @@ class ITasksRepository(ABC):
         pass
 
     @abstractmethod
-    def find_all(self) -> list[Task]:
+    def find_all(self, goal_id: str, filters: dict = None) -> list[Task]:
         pass
 
     @abstractmethod

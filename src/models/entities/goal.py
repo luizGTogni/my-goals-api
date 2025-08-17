@@ -42,7 +42,15 @@ class Goal(Base):
             f"status='{self.status}'>"
         )
 
-    def to_dict(self):
+    def to_dict(self, simplified: bool = False):
+        if simplified:
+            return {
+                "id": self.id,
+                "title": self.title,
+                "description": self.description,
+                "status": self.status,
+            }
+
         return {
             "id": self.id,
             "title": self.title,
