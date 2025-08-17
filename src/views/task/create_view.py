@@ -12,7 +12,7 @@ class CreateTaskView(IView):
 
         title = http_request.body["title"]
         description = http_request.body["description"]
-        goal_id = http_request.body["goal_id"]
+        goal_id = http_request.params["goal_id"]
         user_id = http_request.token_info["user_id"]
         response_body = self.__create_controller.create(
             title,
