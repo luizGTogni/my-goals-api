@@ -7,10 +7,14 @@ class FlaskAdapter:
         self.__view = view
 
     def route_handler(self, params: dict = None, token_info: dict = None):
+        body = None
+        if request.is_json:
+            body = request.json
+
         http_request = HttpRequest(
-            body=request.json,
+            body=body,
             params=params,
-            query=request.args,
+            query=request.args.to_dict(),
             headers=request.headers,
             token_info=token_info,
         )
