@@ -1,6 +1,7 @@
 from flask import Blueprint
 from src.main.composer.create_goal_composer import create_goal_composer
 from src.main.composer.list_all_goals_composer import list_all_goals_composer
+from src.main.composer.update_status_goal_composer import update_status_goal_composer
 from src.middlewares.decorators import protected_route
 from src.adapters import FlaskAdapter
 
@@ -19,3 +20,13 @@ def list_all_goals(token_info: dict):
     view = list_all_goals_composer()
     adapter = FlaskAdapter(view)
     return adapter.route_handler(token_info=token_info)
+
+@goals_routes_bp.route("/goals/<goal_id>/status", methods=["PATCH"])
+@protected_route
+def update_status_goal(goal_id: str, token_info: dict):
+    view = update_status_goal_composer()
+    adapter = FlaskAdapter(view)
+    return adapter.route_handler(
+        params={ "goal_id": goal_id },
+        token_info=token_info
+    )
