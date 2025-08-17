@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from src.models.entities.goal import Goal
-from src.models.entities.task import StatusEnum, Task
+from src.models.entities.task import StatusTaskEnum, Task
 
 class ITasksRepository(ABC):
 
@@ -21,7 +21,7 @@ class ITasksRepository(ABC):
         pass
 
     @abstractmethod
-    def update_status(self, task_id: str, new_status: StatusEnum) -> None:
+    def update_status(self, task_id: str, new_status: StatusTaskEnum) -> None:
         pass
 
     @abstractmethod

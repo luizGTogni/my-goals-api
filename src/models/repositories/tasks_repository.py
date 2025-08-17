@@ -1,7 +1,7 @@
 from sqlalchemy.exc import NoResultFound
 from src.models.settings.connection import DBConnectionHandler
 from src.models.entities.goal import Goal
-from src.models.entities.task import Task, StatusEnum
+from src.models.entities.task import Task, StatusTaskEnum
 from .interfaces.tasks_repository import ITasksRepository
 
 class TasksRepository(ITasksRepository):
@@ -51,7 +51,7 @@ class TasksRepository(ITasksRepository):
                 db.session.rollback()
                 raise exception
 
-    def update_status(self, task_id: str, new_status: StatusEnum) -> None:
+    def update_status(self, task_id: str, new_status: StatusTaskEnum) -> None:
         with self.__db_conn as db:
             try:
                 db.session.query(Task).filter_by(id=task_id).update({
