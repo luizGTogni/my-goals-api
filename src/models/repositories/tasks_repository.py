@@ -1,3 +1,4 @@
+from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import NoResultFound
 from src.models.settings.connection import DBConnectionHandler
 from src.models.entities.goal import Goal
@@ -31,10 +32,30 @@ class TasksRepository(ITasksRepository):
             except NoResultFound:
                 return None
 
-    def find_all(self) -> list[Goal]:
+    def find_all(self, goal_id: dict, filters: dict = None) -> list[Goal]:
         with self.__db_conn as db:
             try:
-                tasks = db.session.query(Task).all()
+                query = db.session.query(Task)
+                filters_accepted = ["title", "title"]
+                for field, value in filters.items():
+                    if field in filters_accepted:
+                        column = getattr(Task, field)
+                        query = query.filter(column.ilike(f"%{value}%"))
+
+                if "status" in filters:
+                    value = filters["status"]
+                    if value in StatusTaskEnum:
+                        query = query.filter_by(status=value)
+
+                if not goal_id:
+                    tasks = query.options(joinedload(Task.goal)).all()
+                    return tasks
+
+                tasks = (query
+                            .filter_by(goal_id=goal_id)
+                            .options(joinedload(Task.goal))
+                            .all()
+                         )
                 return tasks
             except NoResultFound:
                 return []
