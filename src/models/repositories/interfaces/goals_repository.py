@@ -13,7 +13,7 @@ class IGoalsRepository(ABC):
         pass
 
     @abstractmethod
-    def find_all(self) -> list[Goal]:
+    def find_all(self, user_id: str = None, filters: dict = None) -> list[Goal]:
         pass
 
     @abstractmethod
