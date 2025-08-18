@@ -78,6 +78,7 @@ class TasksRepository(ITasksRepository):
                 db.session.query(Task).filter_by(id=task_id).update({
                     "status": new_status,
                 })
+                db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception
