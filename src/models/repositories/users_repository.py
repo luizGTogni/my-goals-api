@@ -1,10 +1,10 @@
 from sqlalchemy.exc import NoResultFound
-from src.models.settings.connection import DBConnectionHandler
+from src.models.settings.sqlite_connection import SqliteConnectionHandler
 from src.models.entities.user import User
 from .interfaces.users_repository import IUsersRepository
 
 class UsersRepository(IUsersRepository):
-    def __init__(self, db_conn: DBConnectionHandler) -> None:
+    def __init__(self, db_conn: SqliteConnectionHandler) -> None:
         self.__db_conn = db_conn
 
     def create(self, name: str, username: str, email: str, password: str) -> None:
