@@ -1,11 +1,17 @@
 from src.controllers.interfaces.user.create_controller import ICreateUserController
 from src.models.repositories.interfaces.users_repository import IUsersRepository
+from src.models.repositories.interfaces.redis_repository import IRedisRepository
 from src.types.errors import HttpAlreadyExistsError
 from src.drivers.password_handler import PasswordHandler
 
 class CreateUserController(ICreateUserController):
-    def __init__(self, users_repository: IUsersRepository) -> None:
+    def __init__(
+            self,
+            users_repository: IUsersRepository,
+            redis_repository: IRedisRepository
+        ) -> None:
         self.__users_repository = users_repository
+        self.__redis_repository = redis_repository
         self.__password_handle = PasswordHandler()
 
     def create(self, user_info: dict) -> dict:
@@ -18,6 +24,7 @@ class CreateUserController(ICreateUserController):
         self.__validate_if_email_already_exists(email)
         password_hashed = self.__encrypt_password(password)
         self.__insert_in_db(name, username, email, password_hashed)
+        self.__insert_in_cache(name, username, email, password_hashed)
 
         return self.__format_response()
 
@@ -40,6 +47,13 @@ class CreateUserController(ICreateUserController):
     def __insert_in_db(self, name: str, username: str, email: str, password_hashed: str) -> None:
         self.__users_repository.create(name, username, email, password_hashed)
 
+    def __insert_in_cache(self, name: str, username: str, email: str, password_hashed: str) -> None:
+        value = f"{name},{email},{password_hashed}"
+        self.__redis_repository.insert(
+            key=username,
+            value=value,
+            expire_seconds=120
+        )
 
     def __format_response(self) -> dict:
         return {
