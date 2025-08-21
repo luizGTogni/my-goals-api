@@ -1,12 +1,12 @@
 from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import NoResultFound
-from src.models.settings.connection import DBConnectionHandler
+from src.models.settings.sqlite_connection import SqliteConnectionHandler
 from src.models.entities.goal import Goal
 from src.models.entities.task import Task, StatusTaskEnum
 from .interfaces.tasks_repository import ITasksRepository
 
 class TasksRepository(ITasksRepository):
-    def __init__(self, db_conn: DBConnectionHandler) -> None:
+    def __init__(self, db_conn: SqliteConnectionHandler) -> None:
         self.__db_conn = db_conn
 
     def create(self, title: str, description: str, goal: Goal) -> None:

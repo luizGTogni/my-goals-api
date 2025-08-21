@@ -1,11 +1,11 @@
 from sqlalchemy.exc import NoResultFound
-from src.models.settings.connection import DBConnectionHandler
+from src.models.settings.sqlite_connection import SqliteConnectionHandler
 from src.models.entities.user import User
 from src.models.entities.goal import Goal, StatusEnum
 from .interfaces.goals_repository import IGoalsRepository
 
 class GoalsRepository(IGoalsRepository):
-    def __init__(self, db_conn: DBConnectionHandler) -> None:
+    def __init__(self, db_conn: SqliteConnectionHandler) -> None:
         self.__db_conn = db_conn
 
     def create(self, title: str, description: str, owner: User) -> None:

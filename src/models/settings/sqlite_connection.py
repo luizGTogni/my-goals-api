@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker
 from src.configs.db_configs import db_infos, DBInfos
 
-class DBConnectionHandler:
+class SqliteConnectionHandler:
     def __init__(self, db: DBInfos) -> None:
         self.__connection_string = (
             f"postgresql+psycopg2://{db.user}:{db.password}@{db.host}:{db.port}/{db.database}"
@@ -16,7 +16,7 @@ class DBConnectionHandler:
     def get_engine(self) -> Engine:
         return self.__engine
 
-    def __enter__(self) -> "DBConnectionHandler":
+    def __enter__(self) -> "SqliteConnectionHandler":
         session_maker = sessionmaker()
         self.session = session_maker(bind=self.__engine)
         return self
@@ -24,4 +24,4 @@ class DBConnectionHandler:
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.session.close()
 
-db_connection_handler = DBConnectionHandler(db_infos)
+sqlite_connection_handler = SqliteConnectionHandler(db_infos)
