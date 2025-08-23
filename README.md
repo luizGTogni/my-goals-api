@@ -10,15 +10,21 @@ A cada tarefa concluída, o usuário avança no progresso do objetivo, tornando 
 
 ## Índice
 
-- [Introdução](#introdução)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-  - [Backend](#backend)
-  - [Testes](#testes)
-- [Documentação](#documentação)
-- [Instalação](#instalação)
-- [Executando a Aplicação](#executando-a-aplicação)
-- [Como Contribuir](#como-contribuir)
-- [Contato](#contato)
+- [**MyGoals**](#mygoals)
+  - [Índice](#índice)
+  - [Introdução](#introdução)
+  - [Tecnologias Utilizadas](#tecnologias-utilizadas)
+    - [**Backend**](#backend)
+      - [**Funcionalidades Principais**](#funcionalidades-principais)
+      - [**Tecnologias**](#tecnologias)
+    - [**Testes**](#testes)
+      - [**Abordagem de Testes**](#abordagem-de-testes)
+      - [**Tecnologias Utilizadas para Testes**](#tecnologias-utilizadas-para-testes)
+  - [Instalação](#instalação)
+    - [**Pré-requisitos**](#pré-requisitos)
+    - [**Passos**](#passos)
+  - [Como contribuir](#como-contribuir)
+  - [Contato](#contato)
 
 ---
 
@@ -96,9 +102,9 @@ Certifique-se de que você tenha instalado:
       ```bash
       docker compose up -d
       ```
-5. Realize a criação do DB:
+5. Suba as migrations:
     ```bash
-    python create_db.py
+    alembic upgrade head
     ```
 
 - **Para executar o Backend**:
