@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-      JWT_ALGORITHM: ${{ secrets.JWT_ALGORITHM }}
+      JWT_ALGORITHM: HS256
 
     steps:
       - name: python code checkout
