@@ -29,9 +29,22 @@ class UsersRepositoryMock:
         self.find_by_email_attributes["email"] = email
         return None
 
+class RedisRepositoryMock:
+    def __init__(self) -> None:
+        self.insert_attributes = {}
+
+    def insert(self, key: str, value: str, expire_seconds: int) -> None:
+        self.insert_attributes["key"] = key
+        self.insert_attributes["value"] = value
+        self.insert_attributes["expire_seconds"] = expire_seconds
+
 def test_create_user():
-    mock_repository = UsersRepositoryMock()
-    controller = CreateUserController(users_repository=mock_repository)
+    mock_users_repository = UsersRepositoryMock()
+    mock_redis_repository = RedisRepositoryMock()
+    controller = CreateUserController(
+        users_repository=mock_users_repository,
+        redis_repository=mock_redis_repository,
+    )
 
     user_info = {
         "name": "John Doe",
@@ -41,15 +54,18 @@ def test_create_user():
     }
 
     response = controller.create(user_info)
-    password_hashed = mock_repository.create_attributes["user_info"][3]
+    password_hashed = mock_users_repository.create_attributes["user_info"][3]
 
-    assert mock_repository.create_attributes["user_info"][0] == "John Doe"
-    assert mock_repository.create_attributes["user_info"][1] == "johndoe"
-    assert mock_repository.create_attributes["user_info"][2] == "johndoe@example.com"
+    assert mock_users_repository.create_attributes["user_info"][0] == "John Doe"
+    assert mock_users_repository.create_attributes["user_info"][1] == "johndoe"
+    assert mock_users_repository.create_attributes["user_info"][2] == "johndoe@example.com"
     assert password_handle.check_password(user_info["password"], password_hashed) is True
 
-    assert mock_repository.find_by_username_attributes["username"] == "johndoe"
-    assert mock_repository.find_by_email_attributes["email"] == "johndoe@example.com"
+    assert mock_users_repository.find_by_username_attributes["username"] == "johndoe"
+    assert mock_users_repository.find_by_email_attributes["email"] == "johndoe@example.com"
+
+    assert mock_redis_repository.insert_attributes["key"] == "johndoe"
+    assert mock_redis_repository.insert_attributes["expire_seconds"] == 120
 
     assert response == {
         "data": {
@@ -61,8 +77,12 @@ def test_create_user():
 
 
 def test_create_user_error_if_username_already_exists():
-    mock_repository = UsersRepositoryMock()
-    controller = CreateUserController(users_repository=mock_repository)
+    mock_users_repository = UsersRepositoryMock()
+    mock_redis_repository = RedisRepositoryMock()
+    controller = CreateUserController(
+        users_repository=mock_users_repository,
+        redis_repository=mock_redis_repository,
+    )
 
     user_info = {
         "name": "John Doe",
@@ -75,8 +95,12 @@ def test_create_user_error_if_username_already_exists():
 
         controller.create(user_info)
 def test_create_user_error_if_email_already_exists():
-    mock_repository = UsersRepositoryMock()
-    controller = CreateUserController(users_repository=mock_repository)
+    mock_users_repository = UsersRepositoryMock()
+    mock_redis_repository = RedisRepositoryMock()
+    controller = CreateUserController(
+        users_repository=mock_users_repository,
+        redis_repository=mock_redis_repository,
+    )
 
     user_info = {
         "name": "John Doe",
