@@ -1,5 +1,5 @@
 # **MyGoals**
-[![NPM](https://img.shields.io/npm/l/react)](https://github.com/yuribodo/a-base-vem-forte/blob/main/LICENSE)
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/luizGTogni/my-goals-api/blob/main/LICENSE)
 
 O **MyGoals** é uma solução voltada para o gerenciamento de objetivos pessoais e profissionais.
 Os usuários podem criar objetivos e, dentro deles, definir tarefas que funcionam como etapas a serem cumpridas.
